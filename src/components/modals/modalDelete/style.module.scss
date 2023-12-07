@@ -1,0 +1,87 @@
+@import "../../../assets/styles/variables.scss";
+
+.modal {
+  width: 594px !important;
+  height: 232px !important;
+  padding: 40px;
+  border-radius: 4px;
+  background-color: $white-color;
+
+  &-title {
+    display: block;
+    text-align: center;
+    color: $dark-color;
+    font-family: Inter;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
+
+  &-desc {
+    display: block;
+    text-align: center;
+    color: $dark-color;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-bottom: 32px;
+  }
+
+  &-btn-group {
+    gap: 16px;
+  }
+
+  &-btn-delete {
+    padding: 12px 99.5px;
+    border-radius: 8px;
+    background-color: $red-color;
+    color: $gray1-color !important;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    border: none;
+  }
+
+  &-btn-cancel {
+    padding: 12px 98px;
+    border-radius: 8px;
+    border: 1px solid $gray2-color !important;
+    color: $dark-color !important;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+}
+
+@media screen and (max-width: 739px) {
+  .modal {
+    width: 356px !important;
+    height: 210px !important;
+    padding: 24px;
+    border-radius: 4px;
+    background-color: $white-color;
+
+    &-title {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 30px;
+      margin-bottom: 16px;
+    }
+
+    &-btn-group {
+      gap: 12px;
+    }
+
+    &-btn-delete {
+      padding: 12px 49px;
+    }
+
+    &-btn-cancel {
+      padding: 12px 47.5px;
+    }
+  }
+}

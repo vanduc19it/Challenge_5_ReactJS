@@ -1,0 +1,9 @@
+@import "../../assets/styles/variables.scss";
+
+.dropdown {
+  &-more-option {
+    position: absolute;
+    right: 12px;
+    top: 38px;
+  }
+}

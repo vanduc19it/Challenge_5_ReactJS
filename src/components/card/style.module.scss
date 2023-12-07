@@ -1,0 +1,135 @@
+@import "../../assets/styles/variables.scss";
+
+.card {
+  width: 632px;
+  height: 220px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid $gray2-color;
+  background-color: $white-color;
+  position: relative;
+  cursor: pointer;
+
+  &-info {
+    gap: 24px;
+  }
+
+  &-image-default {
+    width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    background-color: $gray4-color;
+  }
+
+  &-content {
+    flex-direction: column;
+    width: 436px;
+    height: 140px;
+    gap: 8px;
+  }
+
+  &-title {
+    overflow: hidden;
+    color: $dark-color;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-top: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+  }
+
+  &-desc {
+    color: $dark-color;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  &-action {
+    gap: 24px;
+    justify-content: flex-end;
+  }
+
+  &-divider {
+    width: 600px;
+    height: 0.5px !important;
+    background-color: $gray2-color;
+    margin: 16px 0 12px 0;
+  }
+
+  &-like,
+  &-comment {
+    gap: 8px;
+    align-items: center;
+    height: 20px;
+  }
+
+  &-comment {
+    margin-right: 8px;
+  }
+
+  &-like-text,
+  &-comment-text {
+    color: $dark-color;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  &-like-active {
+    color: $purple-color;
+    font-weight: 500;
+  }
+
+  &-like-icon,
+  &-comment-icon {
+    display: block;
+  }
+
+  &-more-option {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  &-option-active {
+    border-radius: 4px;
+    background: $gray8-color;
+  }
+}
+
+@media screen and (max-width: 739px) {
+  .card {
+    width: 356px;
+
+    &-info {
+      gap: 16px;
+    }
+
+    &-image-default,
+    &-image {
+      width: 94px !important;
+      height: 94px !important;
+    }
+
+    &-title {
+      margin-top: 0px;
+      width: 186px;
+    }
+
+    &-desc {
+      width: 214px;
+    }
+
+    &-divider {
+      width: 324px;
+    }
+  }
+}
