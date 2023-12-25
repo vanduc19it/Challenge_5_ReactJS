@@ -151,6 +151,7 @@ function ViewDetail({
         className={styles.card}
         onClick={handleCloseWriteComment}
       >
+      <div className={styles[writeComment ? `card-has-write` : `card-no-write`]}>
         {card?.image !== "" ? (
           <div className={styles["card-image"]}>
             <Image
@@ -235,7 +236,7 @@ function ViewDetail({
             </Typography.Text>
           )}
         </div>
-
+        </div>
         {!writeComment ? (
           <Flex className={styles["card-write-comment"]}>
             <Button

@@ -28,6 +28,7 @@ function Header({
   };
   const [searchValue, setSearchValue] = useState("");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const storedHistory = localStorage.getItem("searchHistory");
@@ -40,6 +41,7 @@ function Header({
   const [checkInput, setCheckInput] = useState(true);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
     console.log(e.target.value);
     const newSearchInput = e.target.value.trimStart();
 
@@ -98,6 +100,8 @@ function Header({
   const [options, setOptions] = useState<any>([]);
 
   const handleSearch = (value: any) => {
+    console.log(value,"value");
+    
     if (value !== "") {
       const filteredCards = cardList.filter((card: any) =>
         card.name.toLowerCase().includes(value.toLowerCase())
@@ -115,7 +119,15 @@ function Header({
     }
   };
 
-  const onSelect = (value: any) => {};
+  const onSelect = (value: any) => {
+    const selectedOption = options[value];
+    setSearchValue(selectedOption);
+    //xu ly showw search khi chon 1 item
+    console.log(value, "value")
+
+  };
+  
+
 
   const handleRemoveOption = (value: string) => {
     console.log(searchHistory);
@@ -125,6 +137,11 @@ function Header({
     );
     setSearchHistory(updatedHistory);
     setLocalStorageItem("searchHistory", updatedHistory);
+  };
+
+  const highlightTerm = (text:any, term:any) => {
+    const regex = new RegExp(term, 'gi');
+    return text.replace(regex, (match:any) => `<span class="${styles['header-suggestion-highlight']}">${match}</span>`);
   };
 
   const renderOptions = () => {
@@ -155,12 +172,15 @@ function Header({
     } else if (searchValue && options.length === 0) {
       return [{ value: "no result", label: <div>No result</div> }];
     } else {
-      return options.map((name: any, index: any) => ({
+      return options.map((name:any, index:any) => ({
         value: index.toString(),
         label: (
-          <div key={index}>
-            <span style={{ marginRight: "8px" }}>{name}</span>
-          </div>
+          <li
+            key={index}
+            dangerouslySetInnerHTML={{
+              __html: highlightTerm(name, searchTerm),
+            }}
+          />
         ),
       }));
     }
@@ -204,6 +224,8 @@ function Header({
             onSelect={onSelect}
             onSearch={handleSearch}
             className={styles["header-autocomplete"]}
+            value={searchValue}
+            
           >
             <Input
               placeholder="Search.."

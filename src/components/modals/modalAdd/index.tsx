@@ -59,7 +59,9 @@ function ModalAdd({
     const keyCheck =
       e.key === "Process" ? e.code.charAt(e.code.length - 1) : e.key;
       const isValidChar = /^[a-zA-Z\s]*$/.test(keyCheck);
-      if (!isValidChar) {
+      const isValidChar1 = /\p{Emoji}/u.test(keyCheck);
+      if (!isValidChar && !isValidChar1) {
+        e.currentTarget.value = "";
         e.preventDefault();
       }
   };
@@ -71,6 +73,9 @@ function ModalAdd({
     validateInputName(e.target.value)
       ? setNameCheck(true)
       : setNameCheck(false);
+
+
+      e.target.value = e.target.value.replace("/\p{Emoji}/u", "");
   };
 
   const handleDescriptionChange = (
@@ -134,6 +139,13 @@ function ModalAdd({
   const handleCloseIcon = () => {
     setImage("");
   };
+
+
+  const handleOnpaste = (e:any) => {
+      console.log(e.target.value);
+      e.preventDefault();
+      
+  }
 
   return (
     <Modal
@@ -269,6 +281,7 @@ function ModalAdd({
             : `${styles["modal-input-name"]}`
         }
         value={name}
+        onPaste={handleOnpaste}
       />
       <Flex className={styles["modal-desc-group"]}>
         <Typography.Text className={styles["modal-desc-title"]}>
@@ -288,6 +301,7 @@ function ModalAdd({
         bordered={false}
         onChange={handleDescriptionChange}
         value={description}
+        onPaste={handleOnpaste}
       />
       <Flex className={styles["modal-btn-group"]}>
         <Button

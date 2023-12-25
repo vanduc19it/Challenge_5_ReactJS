@@ -4,6 +4,16 @@
   position: relative;
   cursor: pointer;
   overflow-y: auto;
+  height: 100vh !important;
+
+  &-has-write {
+    margin-bottom: 240px;
+  }
+
+  &-no-write {
+    margin-bottom: 68px;
+  }
+ 
 
   &-image {
     display: flex;

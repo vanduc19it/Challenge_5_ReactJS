@@ -13,7 +13,7 @@ function PaginationComponent({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
-  const [inputValue, setInputValue] = useState<number | undefined>(undefined);
+  const [inputValue, setInputValue] = useState<number | undefined>(1);
   const itemRender: PaginationProps["itemRender"] = (
     page,
     type,
