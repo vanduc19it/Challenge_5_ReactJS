@@ -46,6 +46,10 @@
     justify-content: flex-end;
   }
 
+  &-edit-container {
+    display: none;
+  }
+
   &-close-icon {
     display: block;
   }
@@ -91,15 +95,24 @@
 
   &-upload-btn {
     margin: 0 auto;
-    display: block;
+    display: flex;
+    gap: 8px;
     padding: 12px 16px;
     border-radius: 8px;
+    border: none;
+    margin-bottom: 24px;
+  }
+
+  &-upload-text {
     color: $purple-color !important;
     font-family: Inter;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
-    border: none;
+  }
+
+  &-question-icon {
+    display: none;
     margin-bottom: 24px;
   }
 
@@ -186,7 +199,7 @@
     padding: 12px 105.5px;
     border-radius: 8px;
     border: 1px solid $gray5-color !important;
-    background: $gray6-color;
+    background: $gray6-color !important;
     color: $gray7-color !important;
     font-family: Inter;
     font-size: 16px;
@@ -206,7 +219,7 @@
   }
 
   &-btn-active {
-    background: $purple-color;
+    background: $purple-color !important;
     color: $gray1-color !important;
   }
 
@@ -257,12 +270,25 @@
       margin-bottom: 0px;
     }
 
-    &-has-image {
+    &-edit-container {
+      position: absolute;
+      top: 14px;
+      right: -10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &-image-container {
+      height: 92px !important;
       margin-top: 32px;
     }
 
-    &-no-image {
+    &-no-image &-image-container {
       margin-top: 24px;
+    }
+
+    &-btn-group {
+      gap: 12px;
     }
 
     &-btn-edit {
@@ -284,6 +310,10 @@
     &-input-desc {
       height: 156px !important;
       margin-bottom: 24px;
+    }
+
+    &-question-icon {
+      display: block;
     }
   }
 }

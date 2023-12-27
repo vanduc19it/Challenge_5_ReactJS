@@ -28,7 +28,7 @@ function Header({
   };
   const [searchValue, setSearchValue] = useState("");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const storedHistory = localStorage.getItem("searchHistory");
@@ -42,7 +42,19 @@ function Header({
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    console.log(e.target.value);
+
+    e.target.value = e.target.value.replace(/[0-9]/g, "");
+    e.target.value = e.target.value.replace(/^\s/, "");
+    e.target.value = e.target.value.replace(
+      /[$&+,:;=?[\]@#|{}'<>.^*()%!-/`~]/,
+      ""
+    );
+    e.target.value = e.target.value.replace(/\p{Emoji}/u, "");
+
+    if (e.target.value.length > 50) {
+      e.target.value = e.target.value.slice(0, 50);
+      setSearchValue(e.target.value);
+    }
     const newSearchInput = e.target.value.trimStart();
 
     const capitalizedName = newSearchInput.charAt(0) + newSearchInput.slice(1);
@@ -54,27 +66,15 @@ function Header({
     console.log(checkInput);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCheck =
-      e.key === "Process" ? e.code.charAt(e.code.length - 1) : e.key;
-
-    const isValidChar = /^[a-zA-Z\s]*$/.test(keyCheck);
-
-    if (!isValidChar) {
-      e.preventDefault();
-    }
-  };
-
   const [searchResultStatus, setSearchResultStatus] = useState<boolean>(false);
 
   const handleSearchCard = () => {
-    onSearch(searchValue);
     console.log(searchValue);
+    onSearch(searchValue);
 
     if (searchValue !== "" && !searchHistory.includes(searchValue)) {
       const updatedHistory = [searchValue, ...searchHistory];
       setSearchHistory(updatedHistory);
-      console.log(searchHistory);
       localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
 
       const hasSearchResult = cardList.some((card: any) =>
@@ -100,8 +100,8 @@ function Header({
   const [options, setOptions] = useState<any>([]);
 
   const handleSearch = (value: any) => {
-    console.log(value,"value");
-    
+    console.log(value, "value");
+
     if (value !== "") {
       const filteredCards = cardList.filter((card: any) =>
         card.name.toLowerCase().includes(value.toLowerCase())
@@ -123,11 +123,8 @@ function Header({
     const selectedOption = options[value];
     setSearchValue(selectedOption);
     //xu ly showw search khi chon 1 item
-    console.log(value, "value")
-
+    console.log(value, "value");
   };
-  
-
 
   const handleRemoveOption = (value: string) => {
     console.log(searchHistory);
@@ -139,9 +136,13 @@ function Header({
     setLocalStorageItem("searchHistory", updatedHistory);
   };
 
-  const highlightTerm = (text:any, term:any) => {
-    const regex = new RegExp(term, 'gi');
-    return text.replace(regex, (match:any) => `<span class="${styles['header-suggestion-highlight']}">${match}</span>`);
+  const highlightTerm = (text: any, term: any) => {
+    const regex = new RegExp(term, "gi");
+    return text.replace(
+      regex,
+      (match: any) =>
+        `<span class="${styles["header-suggestion-highlight"]}">${match}</span>`
+    );
   };
 
   const renderOptions = () => {
@@ -172,7 +173,7 @@ function Header({
     } else if (searchValue && options.length === 0) {
       return [{ value: "no result", label: <div>No result</div> }];
     } else {
-      return options.map((name:any, index:any) => ({
+      return options.map((name: any, index: any) => ({
         value: index.toString(),
         label: (
           <li
@@ -219,13 +220,12 @@ function Header({
         <Flex className={styles["header-search-box"]}>
           <AutoComplete
             popupMatchSelectWidth={364}
-            style={{ width: 364 }}
+            style={{ width: 364, fontSize: 30 }}
             options={renderOptions()}
             onSelect={onSelect}
             onSearch={handleSearch}
             className={styles["header-autocomplete"]}
             value={searchValue}
-            
           >
             <Input
               placeholder="Search.."
@@ -234,7 +234,6 @@ function Header({
               onPressEnter={handleSearchCard}
               onChange={handleSearchInput}
               value={searchValue}
-              onKeyDown={handleKeyPress}
               prefix={
                 <Image
                   src={searchBlack}

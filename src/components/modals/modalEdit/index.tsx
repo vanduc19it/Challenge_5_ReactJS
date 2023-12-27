@@ -13,8 +13,9 @@ import styles from "./style.module.scss";
 import imageAdd from "../../../assets/images/image-add.svg";
 import closeIcon from "../../../assets/images/close-fill-icon.svg";
 import editIcon from "../../../assets/images/edit-icon.svg";
+import editIconMobile from "../../../assets/images/edit-icon-mobile.svg";
 import errorIcon from "../../../assets/images/error-icon.svg";
-import { getLocalStorageItem } from "../../../apis/cards";
+import questionIcon from "../../../assets/images/question-icon.svg";
 import {
   validateInputDesc,
   validateInputName,
@@ -43,16 +44,19 @@ function ModalEdit({
   const [file, setFile] = useState("");
 
   useEffect(() => {
-    if (visible) {
-      const cardList = getLocalStorageItem("cardList");
 
-      setName(cardList[indexCard]?.name);
-      setImage(cardList[indexCard]?.image);
-      setDescription(cardList[indexCard]?.description);
+    if (visible) {
+      setName(card.name);
+      setImage(card.image);
+      setDescription(card.description);
     }
   }, [visible]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value.replace(/[0-9]/g, "");
+    e.target.value = e.target.value.replace(/^\s/, "");
+    e.target.value= e.target.value.replace(/[$&+,:;=?[\]@#|{}'<>.^*()%!-/`~]/,'');
+    e.target.value= e.target.value.replace(/\p{Emoji}/u,'');
     const newName = e.target.value.trimStart();
     const capitalizedName = newName.charAt(0).toUpperCase() + newName.slice(1);
     setName(capitalizedName);
@@ -73,14 +77,6 @@ function ModalEdit({
       : setDescCheck(false);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCheck =
-      e.key === "Process" ? e.code.charAt(e.code.length - 1) : e.key;
-    const isValidChar = /^[a-zA-Z\s]*$/.test(keyCheck);
-    if (!isValidChar) {
-      e.preventDefault();
-    }
-  };
 
   const handleUpload = async (event: any) => {
     const file = event.file.originFileObj;
@@ -115,7 +111,7 @@ function ModalEdit({
       const data = await response.json();
 
       const cardEdit = {
-        image: data.secure_url,
+        image: file !== "" ? data.secure_url : card.image,
         name,
         description,
         like: card?.like,
@@ -183,6 +179,7 @@ function ModalEdit({
                 </Typography.Text>
               </div>
             </Upload>
+
             <div
               className={styles["modal-close-container"]}
               onClick={handleCloseIcon}
@@ -198,6 +195,22 @@ function ModalEdit({
                 className={styles["modal-close-icon"]}
               />
             </div>
+            <div
+              className={styles["modal-edit-container"]}
+            >
+              <Image
+                src={editIconMobile}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                alt="edit icon"
+                preview={false}
+                className={styles["modal-edit-icon"]}
+              />
+            </div>
+
+            
           </div>
         ) : (
           <>
@@ -232,9 +245,21 @@ function ModalEdit({
               customRequest={handleUpload}
               onChange={handleUpload}
             >
+           
+              
               <Button className={styles["modal-upload-btn"]}>
-                Upload image
-              </Button>
+                    <span className={styles["modal-upload-text"]}>Upload image</span>
+                      <Image
+                    src={questionIcon}
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                    alt="question icon"
+                    preview={false}
+                    className={styles["modal-question-icon"]}
+                  />
+                  </Button>
             </Upload>
           </>
         )}
@@ -255,7 +280,6 @@ function ModalEdit({
             : `${styles["modal-input-name"]}`
         }
         bordered={false}
-        onKeyDown={handleKeyPress}
         value={name}
         onChange={handleNameChange}
       />

@@ -146,6 +146,10 @@ a {
   background: $gray6-color !important;
 }
 
+.ant-select-item {
+  font-size: 16px !important;
+}
+
 .toast-success {
   position: absolute;
   width: 274px;
@@ -296,5 +300,9 @@ a {
     font-weight: 500;
     line-height: 20px;
     width: 155px;
+  }
+  
+  .ant-drawer-body {
+    padding: 17px !important;
   }
 }

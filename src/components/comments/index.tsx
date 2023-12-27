@@ -16,7 +16,13 @@ interface CommentComponentProps {
 function CommentComponent({ comment }: CommentComponentProps) {
   return (
     <div className={styles.comment}>
-      <Typography.Text className={styles["comment-name"]}>
+      <Typography.Text
+        className={
+          comment.name === "Unknown"
+            ? `${styles["comment-name"]} ${styles["comment-name-unknown"]} `
+            : `${styles["comment-name"]}`
+        }
+      >
         {comment.name}
       </Typography.Text>
       <Typography.Text className={styles["comment-desc"]}>
@@ -30,4 +36,3 @@ function CommentComponent({ comment }: CommentComponentProps) {
 }
 
 export default CommentComponent;
-

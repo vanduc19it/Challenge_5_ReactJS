@@ -8,7 +8,7 @@ export const formatNumber = (number: number) => {
   }
 };
 
-export const formatTime = (timeString: any) => {
+export const formatTime = (timeString: string) => {
   const time: any = new Date(timeString);
   const now: any = new Date();
   const timeDistance = Math.abs(now - time) / 36e5;

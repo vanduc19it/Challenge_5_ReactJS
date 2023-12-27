@@ -14,6 +14,8 @@ import imageAdd from "../../../assets/images/image-add.svg";
 import editIcon from "../../../assets/images/edit-icon.svg";
 import errorIcon from "../../../assets/images/error-icon.svg";
 import closeIcon from "../../../assets/images/close-fill-icon.svg";
+import editIconMobile from "../../../assets/images/edit-icon-mobile.svg";
+import questionIcon from "../../../assets/images/question-icon.svg";
 import { updateLocalStorageList } from "../../../apis/cards";
 import {
   validateInputDesc,
@@ -55,27 +57,20 @@ function ModalAdd({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCheck =
-      e.key === "Process" ? e.code.charAt(e.code.length - 1) : e.key;
-      const isValidChar = /^[a-zA-Z\s]*$/.test(keyCheck);
-      const isValidChar1 = /\p{Emoji}/u.test(keyCheck);
-      if (!isValidChar && !isValidChar1) {
-        e.currentTarget.value = "";
-        e.preventDefault();
-      }
-  };
-
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value.replace(/[0-9]/g, "");
+    e.target.value = e.target.value.replace(/^\s/, "");
+    e.target.value = e.target.value.replace(
+      /[$&+,:;=?[\]@#|{}'<>.^*()%!-/`~]/,
+      ""
+    );
+    e.target.value = e.target.value.replace(/\p{Emoji}/u, "");
     const newName = e.target.value.trimStart();
     const capitalizedName = newName.charAt(0).toUpperCase() + newName.slice(1);
     setName(capitalizedName);
     validateInputName(e.target.value)
       ? setNameCheck(true)
       : setNameCheck(false);
-
-
-      e.target.value = e.target.value.replace("/\p{Emoji}/u", "");
   };
 
   const handleDescriptionChange = (
@@ -139,13 +134,6 @@ function ModalAdd({
   const handleCloseIcon = () => {
     setImage("");
   };
-
-
-  const handleOnpaste = (e:any) => {
-      console.log(e.target.value);
-      e.preventDefault();
-      
-  }
 
   return (
     <Modal
@@ -211,6 +199,18 @@ function ModalAdd({
                 className={styles["modal-close-icon"]}
               />
             </div>
+            <div className={styles["modal-edit-container"]}>
+              <Image
+                src={editIconMobile}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                alt="edit icon"
+                preview={false}
+                className={styles["modal-edit-icon"]}
+              />
+            </div>
           </div>
         ) : (
           <>
@@ -246,17 +246,19 @@ function ModalAdd({
               onChange={handleUpload}
             >
               <Button className={styles["modal-upload-btn"]}>
-                Upload image
-                {/* <Image
-                src={image}
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-                alt="question icon"
-                preview={false}
-                className={styles["modal-question-icon"]}
-              /> */}
+                <span className={styles["modal-upload-text"]}>
+                  Upload image
+                </span>
+                <Image
+                  src={questionIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                  alt="question icon"
+                  preview={false}
+                  className={styles["modal-question-icon"]}
+                />
               </Button>
             </Upload>
           </>
@@ -273,7 +275,6 @@ function ModalAdd({
       <Input
         placeholder="Enter your name"
         bordered={false}
-        onKeyDown={handleKeyPress}
         onChange={handleNameChange}
         className={
           name.length > 50
@@ -281,7 +282,6 @@ function ModalAdd({
             : `${styles["modal-input-name"]}`
         }
         value={name}
-        onPaste={handleOnpaste}
       />
       <Flex className={styles["modal-desc-group"]}>
         <Typography.Text className={styles["modal-desc-title"]}>
@@ -301,7 +301,6 @@ function ModalAdd({
         bordered={false}
         onChange={handleDescriptionChange}
         value={description}
-        onPaste={handleOnpaste}
       />
       <Flex className={styles["modal-btn-group"]}>
         <Button

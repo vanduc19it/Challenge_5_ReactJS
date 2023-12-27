@@ -13,7 +13,6 @@
   &-no-write {
     margin-bottom: 68px;
   }
- 
 
   &-image {
     display: flex;
@@ -166,7 +165,7 @@
     padding: 12px 16px;
     border-radius: 8px;
     border: 1px solid $gray5-color !important;
-    background: $gray6-color;
+    background: $gray6-color !important;
     color: $gray7-color !important;
     font-family: Inter;
     font-size: 16px;
@@ -177,7 +176,7 @@
   }
 
   &-btn-active {
-    background: $purple-color;
+    background: $purple-color !important;
     color: $gray1-color !important;
   }
 
@@ -188,6 +187,10 @@
     font-weight: 500;
     line-height: 20px;
     margin-bottom: 24px;
+  }
+  &-return,
+  &-header-divider {
+    display: none;
   }
 }
 
@@ -200,6 +203,32 @@
       width: 160px !important;
       height: 160px !important;
       margin: 0 auto;
+    }
+
+    &-more-option {
+      position: absolute;
+      right: 9px;
+      top: 17px;
+    }
+
+    &-return {
+      display: flex;
+      gap: 12px;
+    }
+
+    &-return-text {
+      color: $dark-color;
+      font-family: Inter;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 26px;
+    }
+
+    &-header-divider {
+      display: block;
+      border-bottom: 1px solid $gray2-color;
+      margin: 0 -17px;
+      margin-top: 12px;
     }
 
     &-title {

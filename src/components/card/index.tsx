@@ -21,7 +21,6 @@ function CardComponent({
   onLike: any;
   onEdit: any;
 }) {
-
   const [viewDetail, setViewDetail] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
   const handleViewDetail = () => {
@@ -33,7 +32,6 @@ function CardComponent({
   const handleCloseDetail = () => {
     setViewDetail(false);
   };
-
   const handleVisibleChange = (e: any) => {
     console.log(card, index);
     setVisible(!visible);

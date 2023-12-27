@@ -13,6 +13,7 @@ import styles from "./style.module.scss";
 import likeIcon from "../../assets/images/like-icon.svg";
 import likeFillIcon from "../../assets/images/like-fill-icon.svg";
 import moreOptionIcon from "../../assets/images/more-option-icon.svg";
+import arrowLeftIcon from "../../assets/images/arrow-left.svg";
 import MoreOption from "../dropdown";
 import { formatNumber } from "../../utils/format";
 import CommentComponent from "../comments";
@@ -106,6 +107,13 @@ function ViewDetail({
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value.replace(/[0-9]/g, "");
+    e.target.value = e.target.value.replace(/^\s/, "");
+    e.target.value = e.target.value.replace(
+      /[$&+,:;=?[\]@#|{}'<>.^*()%!-/`~]/,
+      ""
+    );
+    e.target.value = e.target.value.replace(/\p{Emoji}/u, "");
     const newName = e.target.value.trimStart();
     const capitalizedName = newName.charAt(0).toUpperCase() + newName.slice(1);
     setName(capitalizedName);
@@ -124,21 +132,14 @@ function ViewDetail({
       : setCommentCheck(false);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCheck =
-      e.key === "Process" ? e.code.charAt(e.code.length - 1) : e.key;
-
-    const isValidChar = /^[a-zA-Z\s]*$/.test(keyCheck);
-
-    if (!isValidChar) {
-      e.preventDefault();
-    }
-  };
-
   const [displayedComments, setDisplayedComments] = useState<number>(5);
 
   const handleLoadMoreComments = () => {
     setDisplayedComments((prev) => prev + 5);
+  };
+
+  const handleCloseDrawer = () => {
+    onCloseDetail();
   };
 
   return (
@@ -151,91 +152,111 @@ function ViewDetail({
         className={styles.card}
         onClick={handleCloseWriteComment}
       >
-      <div className={styles[writeComment ? `card-has-write` : `card-no-write`]}>
-        {card?.image !== "" ? (
-          <div className={styles["card-image"]}>
-            <Image
-              src={card?.image}
-              style={{
-                width: 280,
-                height: 280,
-                borderRadius: 8,
-              }}
-              alt="card image"
-              preview={false}
-              className={styles["card-image"]}
-            />
-          </div>
-        ) : (
-          <div className={styles["card-image-default"]}></div>
-        )}
-        <div className={styles["card-more-option"]}>
+        <div className={styles["card-return"]}>
           <Image
-            src={moreOptionIcon}
+            src={arrowLeftIcon}
             style={{
               width: 24,
               height: 24,
             }}
-            alt="more option icon"
+            alt="arrow left icon"
             preview={false}
-            onClick={handleMoreOption}
+            className={styles["card-return-icon"]}
+            onClick={handleCloseDrawer}
           />
+          <Typography.Text className={styles["card-return-text"]}>
+            Details
+          </Typography.Text>
         </div>
 
-        <Typography.Text className={styles["card-title"]}>
-          {card?.name}
-        </Typography.Text>
-        <Typography.Text className={styles["card-desc"]}>
-          {card.description}
-        </Typography.Text>
-        <Divider className={styles["card-divider"]} />
-        <Flex className={styles["card-like"]}>
-          <Image
-            src={likeActive ? likeFillIcon : likeIcon}
-            style={{
-              width: 32,
-              height: 32,
-            }}
-            alt="like icon"
-            preview={false}
-            className={styles["card-like-icon"]}
-            onClick={handleLikeCard}
-          />
-          <Typography.Text
-            className={
-              card?.liked
-                ? `${styles["card-like-text"]} ${styles["card-like-active"]}`
-                : `${styles["card-like-text"]}`
-            }
-          >
-            {formatNumber(card?.like)}
-          </Typography.Text>
-        </Flex>
-        <Flex className={styles["card-comment-box"]}>
-          <Typography.Text className={styles["card-comment-heading"]}>
-            Comments
-          </Typography.Text>
-          <Typography.Text className={styles["card-comment-quantity"]}>
-            ({card?.comments.length})
-          </Typography.Text>
-        </Flex>
-
-        {(card?.comments || [])
-          .slice(0, displayedComments)
-          .map((comment: any, index: any) => (
-            <CommentComponent comment={comment} key={index} />
-          ))}
-
-        <div>
-          {card?.comments && card.comments.length > displayedComments && (
-            <Typography.Text
-              className={styles["card-more-comment"]}
-              onClick={handleLoadMoreComments}
-            >
-              More comments
-            </Typography.Text>
+        <div className={styles["card-header-divider"]}></div>
+        <div
+          className={styles[writeComment ? `card-has-write` : `card-no-write`]}
+        >
+          {card?.image !== "" ? (
+            <div className={styles["card-image"]}>
+              <Image
+                src={card?.image}
+                style={{
+                  width: 280,
+                  height: 280,
+                  borderRadius: 8,
+                }}
+                alt="card image"
+                preview={false}
+                className={styles["card-image"]}
+              />
+            </div>
+          ) : (
+            <div className={styles["card-image-default"]}></div>
           )}
-        </div>
+          <div className={styles["card-more-option"]}>
+            <Image
+              src={moreOptionIcon}
+              style={{
+                width: 24,
+                height: 24,
+              }}
+              alt="more option icon"
+              preview={false}
+              onClick={handleMoreOption}
+            />
+          </div>
+
+          <Typography.Text className={styles["card-title"]}>
+            {card?.name}
+          </Typography.Text>
+          <Typography.Text className={styles["card-desc"]}>
+            {card.description}
+          </Typography.Text>
+          <Divider className={styles["card-divider"]} />
+          <Flex className={styles["card-like"]}>
+            <Image
+              src={likeActive ? likeFillIcon : likeIcon}
+              style={{
+                width: 32,
+                height: 32,
+              }}
+              alt="like icon"
+              preview={false}
+              className={styles["card-like-icon"]}
+              onClick={handleLikeCard}
+            />
+            <Typography.Text
+              className={
+                card?.liked
+                  ? `${styles["card-like-text"]} ${styles["card-like-active"]}`
+                  : `${styles["card-like-text"]}`
+              }
+            >
+              {formatNumber(card?.like)}
+            </Typography.Text>
+          </Flex>
+          <Flex className={styles["card-comment-box"]}>
+            <Typography.Text className={styles["card-comment-heading"]}>
+              Comments
+            </Typography.Text>
+            <Typography.Text className={styles["card-comment-quantity"]}>
+              ({card?.comments.length})
+            </Typography.Text>
+          </Flex>
+
+          {(card?.comments || [])
+            .slice(0, displayedComments)
+            .map((comment: any, index: any) => (
+              <CommentComponent comment={comment} key={index} />
+            ))}
+
+          <div>
+            {card?.comments && card.comments.length > displayedComments && (
+              <Typography.Text
+                className={styles["card-more-comment"]}
+                onClick={handleLoadMoreComments}
+              >
+                More comments
+              </Typography.Text>
+            )}
+          </div>
         </div>
         {!writeComment ? (
           <Flex className={styles["card-write-comment"]}>
@@ -261,7 +282,6 @@ function ViewDetail({
               }
               bordered={false}
               disabled={checkUnknown}
-              onKeyDown={handleKeyPress}
               onChange={handleNameChange}
               value={name}
             />
